@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "../styles/Home.module.css";
 import detectEthereumProvider from "@metamask/detect-provider";
 
@@ -9,6 +9,7 @@ const Home: NextPage = () => {
   const [connectMessage, setconnectMessage] = useState("");
   const [connected, setConnected] = useState(false);
   const [connectButtonDisabled, setconnectButtonDisabled] = useState(false);
+  const [provider, setProvider] = useState<any>(null);
 
   interface RequestArguments {
     method: string;
@@ -18,6 +19,19 @@ const Home: NextPage = () => {
   const args: RequestArguments = {
     method: "eth_requestAccounts",
   };
+
+  useEffect(() => {
+    async function getProvider() {
+      let provider: any = await detectEthereumProvider();
+      setProvider(provider);
+      provider.on("accountsChanged", function (accounts: Array<string>) {
+        setconnectMessage(
+          "Connected successfully, wallet address is " + accounts[0]
+        );
+      });
+    }
+    getProvider();
+  }, []);
 
   async function handleClick() {
     try {
@@ -32,14 +46,13 @@ const Home: NextPage = () => {
   }
 
   async function connectMetamask() {
+    console.log(provider);
     setconnectMessage("Connecting");
     setconnectButtonDisabled(true);
-    const provider: any = await detectEthereumProvider();
+    // const provider: any = await detectEthereumProvider();
     if (provider) {
       try {
-        console.log(provider.isConnected());
         let accounts = await (provider.request(args) as Promise<Array<string>>);
-        console.log(accounts);
         setconnectMessage(
           "Connected successfully, wallet address is " + accounts[0]
         );
@@ -59,7 +72,7 @@ const Home: NextPage = () => {
     setconnectMessage("Disconnecting");
     setconnectButtonDisabled(true);
     try {
-      setconnectMessage("Disconnected");
+      setconnectMessage("");
       setConnected(false);
     } catch (error) {
       console.error(error);
