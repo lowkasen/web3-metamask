@@ -6,6 +6,10 @@ import styles from "../styles/Home.module.css";
 import detectEthereumProvider from "@metamask/detect-provider";
 
 const Home: NextPage = () => {
+  const [connectMessage, setconnectMessage] = useState("");
+  const [connected, setConnected] = useState(false);
+  const [connectButtonDisabled, setconnectButtonDisabled] = useState(false);
+
   interface RequestArguments {
     method: string;
     params?: unknown[] | object;
@@ -15,10 +19,21 @@ const Home: NextPage = () => {
     method: "eth_requestAccounts",
   };
 
-  const [connectMessage, setconnectMessage] = useState("");
+  async function handleClick() {
+    try {
+      if (!connected) {
+        await connectMetamask();
+      } else {
+        await disconnectMetamask();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   async function connectMetamask() {
     setconnectMessage("Connecting");
+    setconnectButtonDisabled(true);
     const provider: any = await detectEthereumProvider();
     if (provider) {
       try {
@@ -28,13 +43,29 @@ const Home: NextPage = () => {
         setconnectMessage(
           "Connected successfully, wallet address is " + accounts[0]
         );
+        setConnected(true);
       } catch (error) {
         console.log(error);
         setconnectMessage("Error connecting");
+        setConnected(false);
       }
     } else {
       console.log("Please install MetaMask!");
     }
+    setconnectButtonDisabled(false);
+  }
+
+  async function disconnectMetamask() {
+    setconnectMessage("Disconnecting");
+    setconnectButtonDisabled(true);
+    try {
+      setconnectMessage("Disconnected");
+      setConnected(false);
+    } catch (error) {
+      console.error(error);
+      setconnectMessage("Error disconnecting");
+    }
+    setconnectButtonDisabled(false);
   }
 
   return (
@@ -50,7 +81,9 @@ const Home: NextPage = () => {
 
         <p className={styles.description}>Get started by pressing Connect</p>
 
-        <button onClick={connectMetamask}>Connect</button>
+        <button onClick={handleClick} disabled={connectButtonDisabled}>
+          {connected ? "Disconnect" : "Connect"}
+        </button>
         <p>{connectMessage}</p>
       </main>
     </div>
