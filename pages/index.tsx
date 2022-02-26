@@ -24,11 +24,15 @@ const Home: NextPage = () => {
     async function getProvider() {
       let provider: any = await detectEthereumProvider();
       setProvider(provider);
+      console.log(provider.chainId);
+      console.log(parseInt(provider.chainId, 16));
       provider.on("accountsChanged", function (accounts: Array<string>) {
         setconnectMessage(
           "Connected successfully, wallet address is " + accounts[0]
         );
+        setConnected(true);
       });
+      provider.on("chainChanged", (_chainId: any) => window.location.reload());
     }
     getProvider();
   }, []);
@@ -46,21 +50,25 @@ const Home: NextPage = () => {
   }
 
   async function connectMetamask() {
-    console.log(provider);
     setconnectMessage("Connecting");
     setconnectButtonDisabled(true);
-    // const provider: any = await detectEthereumProvider();
     if (provider) {
-      try {
-        let accounts = await (provider.request(args) as Promise<Array<string>>);
-        setconnectMessage(
-          "Connected successfully, wallet address is " + accounts[0]
-        );
-        setConnected(true);
-      } catch (error) {
-        console.log(error);
-        setconnectMessage("Error connecting");
-        setConnected(false);
+      if (parseInt(provider.chainId, 16) === 4) {
+        try {
+          let accounts = await (provider.request(args) as Promise<
+            Array<string>
+          >);
+          setconnectMessage(
+            "Connected successfully, wallet address is " + accounts[0]
+          );
+          setConnected(true);
+        } catch (error) {
+          console.log(error);
+          setconnectMessage("Error connecting");
+          setConnected(false);
+        }
+      } else {
+        setconnectMessage("Wrong network!");
       }
     } else {
       console.log("Please install MetaMask!");
