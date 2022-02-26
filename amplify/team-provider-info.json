@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-web3metamask-dev-11405-authRole",
+      "UnauthRoleArn": "arn:aws:iam::054237276863:role/amplify-web3metamask-dev-11405-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::054237276863:role/amplify-web3metamask-dev-11405-authRole",
+      "Region": "ap-southeast-1",
+      "DeploymentBucketName": "amplify-web3metamask-dev-11405-deployment",
+      "UnauthRoleName": "amplify-web3metamask-dev-11405-unauthRole",
+      "StackName": "amplify-web3metamask-dev-11405",
+      "StackId": "arn:aws:cloudformation:ap-southeast-1:054237276863:stack/amplify-web3metamask-dev-11405/2d8417a0-9595-11ec-b4ce-0a03a2731132",
+      "AmplifyAppId": "d1prm3mb4zs82p"
+    }
+  }
+}
