@@ -53,22 +53,21 @@ const Home: NextPage = () => {
     setconnectMessage("Connecting");
     setconnectButtonDisabled(true);
     if (provider) {
-      if (parseInt(provider.chainId, 16) === 4) {
-        try {
-          let accounts = await (provider.request(args) as Promise<
-            Array<string>
-          >);
+      try {
+        let accounts = await (provider.request(args) as Promise<Array<string>>);
+        setconnectMessage(
+          "Connected successfully, wallet address is " + accounts[0]
+        );
+        setConnected(true);
+        if (parseInt(provider.chainId, 16) !== 4) {
           setconnectMessage(
-            "Connected successfully, wallet address is " + accounts[0]
+            "Wrong network! Please switch to Rinkeby Test Network"
           );
-          setConnected(true);
-        } catch (error) {
-          console.log(error);
-          setconnectMessage("Error connecting");
-          setConnected(false);
         }
-      } else {
-        setconnectMessage("Wrong network!");
+      } catch (error) {
+        console.log(error);
+        setconnectMessage("Error connecting");
+        setConnected(false);
       }
     } else {
       console.log("Please install MetaMask!");
