@@ -2,8 +2,8 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import styles from "../styles/Home.module.css";
 import detectEthereumProvider from "@metamask/detect-provider";
+import Sidenavbar from "../components/Sidenavbar";
 
 const Home: NextPage = () => {
   const [connectMessage, setconnectMessage] = useState("");
@@ -89,23 +89,25 @@ const Home: NextPage = () => {
   }
 
   return (
-    <div className={styles.container}>
+    <div className="flex flex-row h-screen bg-slate-100">
       <Head>
         <title>Web 3 Metamask</title>
         <meta name="description" content="Test metamask features" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>Web3 Metamask by Ka Sen Low</h1>
+      <Sidenavbar />
 
-        <p className={styles.description}>Get started by pressing Connect</p>
+      <div className="flex flex-col w-screen justify-center items-center">
+        <h1>Web3 Metamask by Ka Sen Low</h1>
+
+        <p>Get started by pressing Connect</p>
 
         <button onClick={handleClick} disabled={connectButtonDisabled}>
           {connected ? "Disconnect" : "Connect"}
         </button>
         <p>{connectMessage}</p>
-      </main>
+      </div>
     </div>
   );
 };
