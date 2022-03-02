@@ -6,9 +6,8 @@ import detectEthereumProvider from "@metamask/detect-provider";
 import Sidenavbar from "../components/Sidenavbar";
 
 const Home: NextPage = () => {
-  const [connectMessage, setconnectMessage] = useState("");
+  const [buttonText, setButtonText] = useState("Connect");
   const [connected, setConnected] = useState(false);
-  const [connectButtonDisabled, setconnectButtonDisabled] = useState(false);
   const [provider, setProvider] = useState<any>(null);
 
   interface RequestArguments {
@@ -27,66 +26,71 @@ const Home: NextPage = () => {
       console.log(provider.chainId);
       console.log(parseInt(provider.chainId, 16));
       provider.on("accountsChanged", function (accounts: Array<string>) {
-        setconnectMessage(
-          "Connected successfully, wallet address is " + accounts[0]
-        );
-        setConnected(true);
+        if (typeof accounts[0] !== "undefined") {
+          let accountShortened =
+            accounts[0].slice(0, 4) + "..." + accounts[0].slice(-4);
+          setButtonText(accountShortened);
+          setConnected(true);
+        } else {
+          setButtonText("Connect");
+          setConnected(false);
+        }
       });
       provider.on("chainChanged", (_chainId: any) => window.location.reload());
     }
     getProvider();
   }, []);
 
-  async function handleClick() {
-    try {
-      if (!connected) {
-        await connectMetamask();
-      } else {
-        await disconnectMetamask();
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  // async function handleClick() {
+  //   try {
+  //     if (!connected) {
+  //       await connectMetamask();
+  //     } else {
+  //       await disconnectMetamask();
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }
 
-  async function connectMetamask() {
-    setconnectMessage("Connecting");
-    setconnectButtonDisabled(true);
-    if (provider) {
-      try {
-        let accounts = await (provider.request(args) as Promise<Array<string>>);
-        setconnectMessage(
-          "Connected successfully, wallet address is " + accounts[0]
-        );
-        setConnected(true);
-        if (parseInt(provider.chainId, 16) !== 4) {
-          setconnectMessage(
-            "Wrong network! Please switch to Rinkeby Test Network"
-          );
-        }
-      } catch (error) {
-        console.log(error);
-        setconnectMessage("Error connecting");
-        setConnected(false);
-      }
-    } else {
-      console.log("Please install MetaMask!");
-    }
-    setconnectButtonDisabled(false);
-  }
+  // async function connectMetamask() {
+  //   setconnectMessage("Connecting");
+  //   setconnectButtonDisabled(true);
+  //   if (provider) {
+  //     try {
+  //       let accounts = await (provider.request(args) as Promise<Array<string>>);
+  //       setconnectMessage(
+  //         "Connected successfully, wallet address is " + accounts[0]
+  //       );
+  //       setConnected(true);
+  //       if (parseInt(provider.chainId, 16) !== 4) {
+  //         setconnectMessage(
+  //           "Wrong network! Please switch to Rinkeby Test Network"
+  //         );
+  //       }
+  //     } catch (error) {
+  //       console.error(error);
+  //       setconnectMessage("Error connecting");
+  //       setConnected(false);
+  //     }
+  //   } else {
+  //     console.log("Please install MetaMask!");
+  //   }
+  //   setconnectButtonDisabled(false);
+  // }
 
-  async function disconnectMetamask() {
-    setconnectMessage("Disconnecting");
-    setconnectButtonDisabled(true);
-    try {
-      setconnectMessage("");
-      setConnected(false);
-    } catch (error) {
-      console.error(error);
-      setconnectMessage("Error disconnecting");
-    }
-    setconnectButtonDisabled(false);
-  }
+  // async function disconnectMetamask() {
+  //   setconnectMessage("Disconnecting");
+  //   setconnectButtonDisabled(true);
+  //   try {
+  //     setconnectMessage("");
+  //     setConnected(false);
+  //   } catch (error) {
+  //     console.error(error);
+  //     setconnectMessage("Error disconnecting");
+  //   }
+  //   setconnectButtonDisabled(false);
+  // }
 
   return (
     <div className="flex flex-row h-screen bg-slate-100">
@@ -96,17 +100,17 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Sidenavbar />
+      <Sidenavbar
+        provider={provider}
+        connected={connected}
+        setConnected={setConnected}
+        buttonText={buttonText}
+        setButtonText={setButtonText}
+      />
 
       <div className="flex flex-col w-screen justify-center items-center">
-        <h1>Web3 Metamask by Ka Sen Low</h1>
-
-        <p>Get started by pressing Connect</p>
-
-        <button onClick={handleClick} disabled={connectButtonDisabled}>
-          {connected ? "Disconnect" : "Connect"}
-        </button>
-        <p>{connectMessage}</p>
+        <h1 className="text-4xl font-bold">Web3 Metamask by Ka Sen Low</h1>
+        <p className="text-xl my-3">Get started by pressing Connect</p>
       </div>
     </div>
   );
