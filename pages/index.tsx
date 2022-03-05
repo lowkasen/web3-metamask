@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Gridcardhome from "../components/Gridcardhome";
 import Sidenavbar2 from "../components/Sidenavbar2";
 import { useWeb3React } from "@web3-react/core";
@@ -9,8 +9,25 @@ import { useWeb3React } from "@web3-react/core";
 const Home: NextPage = () => {
   const [buttonText, setButtonText] = useState("Connect");
   const [connected, setConnected] = useState(false);
+  const [balance, setBalance] = useState("2.435 ETH");
 
-  const { account, chainId } = useWeb3React();
+  const { account, chainId, library } = useWeb3React();
+
+  useEffect(() => {
+    const getAccountBalance = async () => {
+      try {
+        if (account) {
+          const gwei = await library.eth.getBalance(account);
+          setBalance(`${library.utils.fromWei(gwei, "ether")} ETH`);
+        } else {
+          setBalance("Disconnected");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getAccountBalance();
+  }, [account]);
 
   const getShortenedAccount = () => {
     let accountShortened = "";
@@ -41,7 +58,7 @@ const Home: NextPage = () => {
         <h1 className="text-4xl font-bold">Web3 Metamask by Ka Sen Low</h1>
         <p className="text-xl my-3">Get started by pressing Connect</p>
         <div className="grid grid-cols-2 gap-4 mt-6 drop-shadow">
-          <Gridcardhome heading="Account Balance" text="2.435 ETH" />
+          <Gridcardhome heading="Account Balance" text={balance} />
           <Gridcardhome
             heading="Chain"
             text={chainId ? chainId.toString() : "0"}
