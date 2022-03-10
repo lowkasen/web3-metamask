@@ -5,11 +5,18 @@ import { useEffect, useState } from "react";
 import Gridcardhome from "../components/Gridcardhome";
 import Sidenavbar2 from "../components/Sidenavbar2";
 import { useWeb3React } from "@web3-react/core";
+import Sendtransactioncard from "../components/Sendtransactioncard";
+import { FormDataInterface } from "../components/Sendtransactioncard";
 
 const Home: NextPage = () => {
   const [buttonText, setButtonText] = useState("Connect");
   const [connected, setConnected] = useState(false);
   const [balance, setBalance] = useState("2.435 ETH");
+  const [formData, setFormData] = useState<FormDataInterface>({
+    address: "",
+    amount: NaN,
+    message: "",
+  });
 
   const { account, chainId, library } = useWeb3React();
 
@@ -69,6 +76,7 @@ const Home: NextPage = () => {
           />
           <Gridcardhome heading="Hello" text="World" />
         </div>
+        <Sendtransactioncard formData={formData} setFormData={setFormData} />
       </div>
     </div>
   );
