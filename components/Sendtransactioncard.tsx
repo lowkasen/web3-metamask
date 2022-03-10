@@ -35,7 +35,6 @@ const Sendtransactioncard = ({
             from: account,
             to: formData.address,
             value: wei,
-            //   data: data,
           };
 
           const test = await library.eth.sendTransaction(transactionObject);
@@ -51,23 +50,53 @@ const Sendtransactioncard = ({
   };
 
   return (
-    <div>
-      <h1>Send transaction</h1>
-      <form onSubmit={handleSendTransaction}>
+    <div className="flex flex-col border border-zinc-500 drop-shadow rounded-xl my-6 px-4 py-7">
+      <h2 className="text-xl font-semibold">Send transaction</h2>
+      <p className="text-sm">from Metamask</p>
+      <form className="p-5" onSubmit={handleSendTransaction}>
         <div className="flex flex-col">
-          <label>
-            Receiver address:
-            <input type="text" name="address" onChange={handleChange} />
+          <label className="flex flex-col py-1">
+            <span className="text-md font-semibold mb-1">
+              Receiver address:
+            </span>
+            <input
+              type="text"
+              name="address"
+              onChange={handleChange}
+              placeholder="0x8A4A47Ea8b52ce27855Edbf2b9De24C249eE0285"
+              className="rounded py-1 px-2"
+            />
           </label>
-          <label>
-            Amount (ETH):
-            <input type="text" name="amount" onChange={handleChange} />
-          </label>
-          <label>
-            Message:
-            <input type="text" name="message" onChange={handleChange} />
-          </label>
-          <input type="submit" value="Submit" />
+          <div className="flex flex-wrap justify-between gap-x-2">
+            <label className="flex-auto flex flex-col py-1">
+              <span className="text-md font-semibold mb-1">Amount (ETH):</span>
+              <input
+                type="text"
+                name="amount"
+                onChange={handleChange}
+                placeholder="1.2345"
+                className="rounded py-1 px-2"
+              />
+            </label>
+            {/* <div className="mx-2"></div> */}
+            <label className="flex-auto flex flex-col py-1">
+              <span className="text-md font-semibold mb-1">Message:</span>
+              <input
+                type="text"
+                name="message"
+                onChange={handleChange}
+                placeholder="Hello World"
+                className="rounded py-1 px-2"
+              />
+            </label>
+          </div>
+          <div className="flex justify-center pt-6">
+            <input
+              type="submit"
+              value="Send"
+              className="px-5 py-2 bg-slate-50 rounded-md hover:cursor-pointer hover:bg-gray-200"
+            />
+          </div>
         </div>
       </form>
     </div>

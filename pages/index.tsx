@@ -7,6 +7,7 @@ import Sidenavbar2 from "../components/Sidenavbar2";
 import { useWeb3React } from "@web3-react/core";
 import Sendtransactioncard from "../components/Sendtransactioncard";
 import { FormDataInterface } from "../components/Sendtransactioncard";
+import Web3 from "web3";
 
 const Home: NextPage = () => {
   const [buttonText, setButtonText] = useState("Connect");
@@ -18,14 +19,27 @@ const Home: NextPage = () => {
     message: "",
   });
 
-  const { account, chainId, library } = useWeb3React();
+  const { account, chainId, library } = useWeb3React<Web3>();
 
   useEffect(() => {
     const getAccountBalance = async () => {
       try {
-        if (account) {
+        if (account && library) {
           const gwei = await library.eth.getBalance(account);
-          setBalance(`${library.utils.fromWei(gwei, "ether")} ETH`);
+          const ethString = library.utils.fromWei(gwei, "ether");
+          let eth = ethString;
+          console.log(eth);
+          try {
+            if (ethString.split(".")[1].length > 5) {
+              console.log(ethString.split(".")[0]);
+              eth =
+                ethString.split(".")[0] +
+                "." +
+                ethString.split(".")[1].slice(0, 4);
+            }
+          } catch (error) {}
+          console.log(eth);
+          setBalance(`${eth} ETH`);
         } else {
           setBalance("Disconnected");
         }
@@ -64,7 +78,7 @@ const Home: NextPage = () => {
       <div className="flex flex-col w-screen px-7 pt-10">
         <h1 className="text-4xl font-bold">Web3 Metamask by Ka Sen Low</h1>
         <p className="text-xl my-3">Get started by pressing Connect</p>
-        <div className="grid grid-cols-2 gap-4 mt-6 drop-shadow">
+        <div className="grid grid-cols-2 gap-4 my-6 drop-shadow">
           <Gridcardhome heading="Account Balance" text={balance} />
           <Gridcardhome
             heading="Chain"
