@@ -64,7 +64,7 @@ const Home: NextPage = () => {
       <div className="flex flex-col w-screen px-7 pt-10">
         <h1 className="text-4xl font-bold">Web3 Metamask by Ka Sen Low</h1>
         <p className="text-xl my-3">Get started by pressing Connect</p>
-        <div className="grid grid-cols-2 gap-4 mt-6 drop-shadow">
+        <div className="grid grid-cols-2 gap-4 my-6 drop-shadow">
           <Gridcardhome heading="Account Balance" text={balance} />
           <Gridcardhome
             heading="Chain"
