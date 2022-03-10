@@ -90,12 +90,11 @@ const Sendtransactioncard = ({
               />
             </label>
           </div>
-
           <div className="flex justify-center pt-6">
             <input
               type="submit"
               value="Send"
-              className="border border-white px-5 py-2 bg-slate-50 hover:cursor-pointer"
+              className="px-5 py-2 bg-slate-50 rounded-md hover:cursor-pointer hover:bg-gray-200"
             />
           </div>
         </div>
