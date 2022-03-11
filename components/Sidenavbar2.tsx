@@ -84,7 +84,7 @@ export default function Sidenavbar2({
   };
 
   return (
-    <div className="flex flex-col w-96 py-10 px-6 bg-zinc-900 text-gray-200">
+    <div className="flex-initial fixed md:relative inset-y-0 left-0 transform -translate-x-full md:translate-x-0 transition duration-200 ease-in-out z-10 flex flex-col w-80 py-10 px-6 bg-zinc-900 text-gray-200">
       <div className="flex">
         <MenuIcon className="flex-none w-6" />
         <div className="flex-auto flex justify-center items-center">
@@ -105,17 +105,15 @@ export default function Sidenavbar2({
           <p className="flex-auto ml-4 font-medium">Contact</p>
         </div>
       </div>
-      <div className="flex justify-center">
-        <button
-          onClick={handleClick}
-          disabled={connectButtonDisabled}
-          className="flex-auto border rounded-md border-slate-50 p-3 hover:bg-zinc-800"
-        >
-          {connected && !checkChainId()
-            ? "Wrong network!"
-            : buttonText + getShortenedAccount()}
-        </button>
-      </div>
+      <button
+        className="border rounded-md border-slate-50 p-3 hover:bg-zinc-800"
+        onClick={handleClick}
+        disabled={connectButtonDisabled}
+      >
+        {connected && !checkChainId()
+          ? "Wrong network!"
+          : buttonText + getShortenedAccount()}
+      </button>
     </div>
   );
 }

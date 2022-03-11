@@ -53,7 +53,7 @@ const Sendtransactioncard = ({
     <div className="flex flex-col border border-zinc-500 drop-shadow rounded-xl my-6 px-4 py-7">
       <h2 className="text-xl font-semibold">Send transaction</h2>
       <p className="text-sm">from Metamask</p>
-      <form className="p-5" onSubmit={handleSendTransaction}>
+      <form className="mt-5 mx-5" onSubmit={handleSendTransaction}>
         <div className="flex flex-col">
           <label className="flex flex-col py-1">
             <span className="text-md font-semibold mb-1">

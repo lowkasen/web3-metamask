@@ -61,7 +61,7 @@ const Home: NextPage = () => {
   };
 
   return (
-    <div className="flex flex-row h-screen bg-slate-200">
+    <div className="flex min-h-screen h-full min-w-fit bg-slate-200">
       <Head>
         <title>Web 3 Metamask</title>
         <meta name="description" content="Test metamask features" />
@@ -75,10 +75,10 @@ const Home: NextPage = () => {
         setButtonText={setButtonText}
       />
 
-      <div className="flex flex-col w-screen px-7 pt-10">
+      <div className="flex-auto flex flex-col px-7 pt-10">
         <h1 className="text-4xl font-bold">Web3 Metamask by Ka Sen Low</h1>
         <p className="text-xl my-3">Get started by pressing Connect</p>
-        <div className="grid grid-cols-2 gap-4 my-6 drop-shadow">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6 drop-shadow">
           <Gridcardhome heading="Account Balance" text={balance} />
           <Gridcardhome
             heading="Chain"

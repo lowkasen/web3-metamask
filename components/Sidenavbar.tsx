@@ -75,7 +75,7 @@ export default function Sidenavbar(props: {
   }
 
   return (
-    <div className="flex flex-col w-96 py-10 px-6 bg-zinc-900 text-gray-200">
+    <div className="flex-none flex flex-col py-10 px-6 bg-zinc-900 text-gray-200">
       <div className="flex">
         <MenuIcon className="flex-none w-6" />
         <div className="flex-auto flex justify-center items-center">
@@ -96,15 +96,13 @@ export default function Sidenavbar(props: {
           <p className="flex-auto ml-4 font-medium">Contact</p>
         </div>
       </div>
-      <div className="flex justify-center">
-        <button
-          onClick={handleClick}
-          disabled={connectButtonDisabled}
-          className="flex-auto border rounded-md border-slate-50 p-3 hover:bg-zinc-800"
-        >
-          {props.buttonText}
-        </button>
-      </div>
+      <button
+        onClick={handleClick}
+        disabled={connectButtonDisabled}
+        className="border rounded-md border-slate-50 p-3 hover:bg-zinc-800"
+      >
+        {props.buttonText}
+      </button>
     </div>
   );
 }
