@@ -1,32 +1,32 @@
+import { useWeb3React } from "@web3-react/core";
+import { useState, Dispatch, SetStateAction } from "react";
+import { InjectedConnector } from "@web3-react/injected-connector";
 import {
   MenuIcon,
   HomeIcon,
   SupportIcon,
   UserIcon,
 } from "@heroicons/react/solid";
-import { Dispatch, SetStateAction, useState } from "react";
 
-export default function Sidenavbar(props: {
-  provider: any;
+interface Sidenavbarprops {
   connected: boolean;
   setConnected: Dispatch<SetStateAction<boolean>>;
   buttonText: string;
   setButtonText: Dispatch<SetStateAction<string>>;
-}) {
+}
+
+export function Sidenavbar({
+  connected,
+  setConnected,
+  buttonText,
+  setButtonText,
+}: Sidenavbarprops) {
   const [connectButtonDisabled, setconnectButtonDisabled] = useState(false);
-
-  interface RequestArguments {
-    method: string;
-    params?: unknown[] | object;
-  }
-
-  const args: RequestArguments = {
-    method: "eth_requestAccounts",
-  };
+  const { account, chainId, activate, deactivate } = useWeb3React();
 
   async function handleClick() {
     try {
-      if (!props.connected) {
+      if (!connected) {
         await connectMetamask();
       } else {
         await disconnectMetamask();
@@ -37,45 +37,60 @@ export default function Sidenavbar(props: {
   }
 
   async function connectMetamask() {
-    props.setButtonText("Connecting");
-    setconnectButtonDisabled(true);
-    if (props.provider) {
-      try {
-        let accounts = await (props.provider.request(args) as Promise<
-          Array<string>
-        >);
-        let accountShortened =
-          accounts[0].slice(0, 4) + "..." + accounts[0].slice(-4);
-        props.setButtonText(accountShortened);
-        props.setConnected(true);
-        if (parseInt(props.provider.chainId, 16) !== 4) {
-          props.setButtonText("Wrong network!");
-        }
-      } catch (error) {
-        console.error(error);
-        props.setButtonText("Error!");
-        props.setConnected(false);
-      }
-    } else {
-      console.log("Please install MetaMask!");
-    }
-    setconnectButtonDisabled(false);
-  }
-  async function disconnectMetamask() {
-    props.setButtonText("Disconnecting");
-    setconnectButtonDisabled(true);
     try {
-      props.setButtonText("Connect");
-      props.setConnected(false);
+      setButtonText("Connecting");
+      setconnectButtonDisabled(true);
+      await activate(new InjectedConnector({ supportedChainIds: [4] }));
+      setConnected(true);
+      setButtonText("");
     } catch (error) {
       console.error(error);
-      props.setButtonText("Error!");
+      setButtonText("Error!");
+      setConnected(false);
     }
     setconnectButtonDisabled(false);
   }
 
+  async function disconnectMetamask() {
+    try {
+      setButtonText("Disconnecting");
+      setconnectButtonDisabled(true);
+      deactivate();
+      setButtonText("Connect");
+      setConnected(false);
+    } catch (error) {
+      console.error(error);
+      setButtonText("Error!");
+    }
+    setconnectButtonDisabled(false);
+  }
+
+  const getShortenedAccount = () => {
+    let accountShortened = "";
+    if (account) {
+      accountShortened = account.slice(0, 4) + "..." + account.slice(-4);
+    } else {
+      accountShortened = "";
+    }
+    return accountShortened;
+  };
+
+  const checkChainId = () => {
+    if (chainId && chainId === 4) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   return (
-    <div className="flex-none flex flex-col py-10 px-6 bg-zinc-900 text-gray-200">
+    <div
+      id="sidenavbar"
+      className="flex-initial fixed md:relative 
+        inset-y-0 left-0 transform -translate-x-full md:translate-x-0 
+        transition duration-200 ease-in-out z-10 
+        flex flex-col w-80 py-10 px-6 bg-zinc-900 text-slate-50"
+    >
       <div className="flex">
         <MenuIcon className="flex-none w-6" />
         <div className="flex-auto flex justify-center items-center">
@@ -97,11 +112,13 @@ export default function Sidenavbar(props: {
         </div>
       </div>
       <button
+        className="border rounded-md border-slate-50 p-3 hover:bg-zinc-800"
         onClick={handleClick}
         disabled={connectButtonDisabled}
-        className="border rounded-md border-slate-50 p-3 hover:bg-zinc-800"
       >
-        {props.buttonText}
+        {connected && !checkChainId()
+          ? "Wrong network!"
+          : buttonText + getShortenedAccount()}
       </button>
     </div>
   );

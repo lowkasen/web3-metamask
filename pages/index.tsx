@@ -3,11 +3,12 @@ import Head from "next/head";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import Gridcardhome from "../components/Gridcardhome";
-import Sidenavbar2 from "../components/Sidenavbar2";
+import { Sidenavbar } from "../components/Sidenavbar";
 import { useWeb3React } from "@web3-react/core";
 import Sendtransactioncard from "../components/Sendtransactioncard";
 import { FormDataInterface } from "../components/Sendtransactioncard";
 import Web3 from "web3";
+import { Topnavbar } from "../components/Topnavbar";
 
 const Home: NextPage = () => {
   const [buttonText, setButtonText] = useState("Connect");
@@ -41,7 +42,7 @@ const Home: NextPage = () => {
           console.log(eth);
           setBalance(`${eth} ETH`);
         } else {
-          setBalance("Disconnected");
+          setBalance("0 ETH");
         }
       } catch (error) {
         console.error(error);
@@ -61,21 +62,23 @@ const Home: NextPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen h-full min-w-fit bg-slate-200">
+    <div className="flex flex-col md:flex-row min-h-screen h-full min-w-fit bg-slate-200">
       <Head>
         <title>Web 3 Metamask</title>
         <meta name="description" content="Test metamask features" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Sidenavbar2
+      <Topnavbar />
+
+      <Sidenavbar
         connected={connected}
         setConnected={setConnected}
         buttonText={buttonText}
         setButtonText={setButtonText}
       />
 
-      <div className="flex-auto flex flex-col px-7 pt-10">
+      <div className="flex-auto flex flex-col px-7 pt-24 md:pt-10">
         <h1 className="text-4xl font-bold">Web3 Metamask by Ka Sen Low</h1>
         <p className="text-xl my-3">Get started by pressing Connect</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6 drop-shadow">
