@@ -1,10 +1,6 @@
 import { LegacyRef, useRef } from "react";
 
 export const Topnavbar = () => {
-  // document.onclick = function (e) {
-  //   console.log(e?.target as Element);
-  // };
-
   const toggleSidebar = () => {
     const sidebar = document.getElementById("sidenavbar");
     const topbarbtn = document.getElementById("topnavbarbtn");
@@ -17,10 +13,15 @@ export const Topnavbar = () => {
           topbarbtn?.contains(e.target as HTMLElement)
         )
       ) {
+        // hide side bar and remove event listener
         sidebar?.classList.add("-translate-x-full");
-        console.log("removing");
         document.removeEventListener("mousedown", handler);
-      } else if (topbarbtn?.contains(e.target as HTMLElement)) {
+      } else if (
+        // case if click is on topnavbarbtn
+        topbarbtn?.contains(e.target as HTMLElement)
+      ) {
+        // no need to hide sidebar because already hidden with the function below
+        // only need to remove event listener
         document.removeEventListener("mousedown", handler);
       }
     };
