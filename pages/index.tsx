@@ -29,17 +29,14 @@ const Home: NextPage = () => {
           const gwei = await library.eth.getBalance(account);
           const ethString = library.utils.fromWei(gwei, "ether");
           let eth = ethString;
-          console.log(eth);
           try {
             if (ethString.split(".")[1].length > 5) {
-              console.log(ethString.split(".")[0]);
               eth =
                 ethString.split(".")[0] +
                 "." +
                 ethString.split(".")[1].slice(0, 4);
             }
           } catch (error) {}
-          console.log(eth);
           setBalance(`${eth} ETH`);
         } else {
           setBalance("0 ETH");
