@@ -89,7 +89,6 @@ const Home: NextPage = () => {
       />
 
       <div className="flex w-full justify-center">
-        {/* w-full lg:max-w-xl */}
         <div className="flex flex-col px-7 pt-24 md:pt-10 w-[40rem] lg:w-[45rem]">
           <h1 className="text-4xl font-bold">Web3 Metamask by Ka Sen Low</h1>
           <p className="text-xl my-3">Get started by pressing Connect</p>
