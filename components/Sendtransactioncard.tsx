@@ -50,9 +50,9 @@ const Sendtransactioncard = ({
   };
 
   return (
-    <div className="flex flex-col border border-zinc-500 drop-shadow rounded-xl my-6 px-4 py-7">
-      <h2 className="text-xl font-semibold">Send transaction</h2>
-      <p className="text-sm">from Metamask</p>
+    <div className="flex flex-col border border-black bg-white drop-shadow-md rounded-xl my-6 px-4 py-7">
+      <h2 className="text-2xl font-semibold">Send transaction</h2>
+      <p className="text-sm mt-1">from Metamask</p>
       <form className="mt-5 mx-5" onSubmit={handleSendTransaction}>
         <div className="flex flex-col">
           <label className="flex flex-col py-1">
@@ -64,7 +64,7 @@ const Sendtransactioncard = ({
               name="address"
               onChange={handleChange}
               placeholder="0x8A4A47Ea8b52ce27855Edbf2b9De24C249eE0285"
-              className="rounded py-1 px-2"
+              className="rounded py-1 px-2 bg-gray-100"
             />
           </label>
           <div className="flex flex-wrap justify-between gap-x-2">
@@ -75,7 +75,7 @@ const Sendtransactioncard = ({
                 name="amount"
                 onChange={handleChange}
                 placeholder="1.2345"
-                className="rounded py-1 px-2"
+                className="rounded py-1 px-2 bg-gray-100"
               />
             </label>
             {/* <div className="mx-2"></div> */}
@@ -86,7 +86,7 @@ const Sendtransactioncard = ({
                 name="message"
                 onChange={handleChange}
                 placeholder="Hello World"
-                className="rounded py-1 px-2"
+                className="rounded py-1 px-2 bg-gray-100"
               />
             </label>
           </div>
@@ -94,7 +94,7 @@ const Sendtransactioncard = ({
             <input
               type="submit"
               value="Send"
-              className="px-5 py-2 bg-slate-50 rounded-md hover:cursor-pointer hover:bg-gray-200"
+              className="px-5 py-2 bg-blue-900 text-blue-100 p-3 hover:bg-blue-800 hover:text-blue-100 rounded-md hover:cursor-pointer"
             />
           </div>
         </div>

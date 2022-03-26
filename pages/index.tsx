@@ -14,6 +14,7 @@ const Home: NextPage = () => {
   const [buttonText, setButtonText] = useState("Connect");
   const [connected, setConnected] = useState(false);
   const [balance, setBalance] = useState("2.435 ETH");
+  const [transactionCount, setTransactionCount] = useState(0);
   const [formData, setFormData] = useState<FormDataInterface>({
     address: "",
     amount: NaN,
@@ -45,7 +46,19 @@ const Home: NextPage = () => {
         console.error(error);
       }
     };
+
+    const getTransactionCount = async () => {
+      try {
+        if (account && library) {
+          setTransactionCount(1);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
     getAccountBalance();
+    getTransactionCount();
   }, [account]);
 
   const getShortenedAccount = () => {
@@ -59,7 +72,7 @@ const Home: NextPage = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen h-full min-w-fit bg-slate-200">
+    <div className="flex flex-col md:flex-row min-h-screen h-full min-w-fit bg-white">
       <Head>
         <title>Web 3 Metamask</title>
         <meta name="description" content="Test metamask features" />
@@ -75,22 +88,28 @@ const Home: NextPage = () => {
         setButtonText={setButtonText}
       />
 
-      <div className="flex-auto flex flex-col px-7 pt-24 md:pt-10">
-        <h1 className="text-4xl font-bold">Web3 Metamask by Ka Sen Low</h1>
-        <p className="text-xl my-3">Get started by pressing Connect</p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6 drop-shadow">
-          <Gridcardhome heading="Account Balance" text={balance} />
-          <Gridcardhome
-            heading="Chain"
-            text={chainId ? chainId.toString() : "0"}
-          />
-          <Gridcardhome
-            heading="Address"
-            text={connected ? getShortenedAccount() : "Disconnected"}
-          />
-          <Gridcardhome heading="Hello" text="World" />
+      <div className="flex w-full justify-center">
+        {/* w-full lg:max-w-xl */}
+        <div className="flex flex-col px-7 pt-24 md:pt-10 w-[40rem] lg:w-[45rem]">
+          <h1 className="text-4xl font-bold">Web3 Metamask by Ka Sen Low</h1>
+          <p className="text-xl my-3">Get started by pressing Connect</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 my-6">
+            <Gridcardhome heading="Account Balance" text={balance} />
+            <Gridcardhome
+              heading="Chain"
+              text={chainId ? chainId.toString() : "0"}
+            />
+            <Gridcardhome
+              heading="Address"
+              text={connected ? getShortenedAccount() : "Disconnected"}
+            />
+            <Gridcardhome
+              heading="Transactions"
+              text={connected ? transactionCount.toString() : "0"}
+            />
+          </div>
+          <Sendtransactioncard formData={formData} setFormData={setFormData} />
         </div>
-        <Sendtransactioncard formData={formData} setFormData={setFormData} />
       </div>
     </div>
   );

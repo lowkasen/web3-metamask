@@ -86,10 +86,10 @@ export function Sidenavbar({
   return (
     <div
       id="sidenavbar"
-      className="flex-initial fixed md:relative 
+      className="fixed md:relative 
         inset-y-0 left-0 transform -translate-x-full md:translate-x-0 
         transition duration-200 ease-in-out z-10 
-        flex flex-col w-80 py-10 px-6 bg-zinc-900 text-slate-50"
+        flex flex-col w-64 py-10 px-6 bg-blue-200 text-blue-900 shadow-lg shadow-blue-900"
     >
       <div className="flex">
         {/* <MenuIcon className="flex-none w-6" /> */}
@@ -112,7 +112,7 @@ export function Sidenavbar({
         </a>
       </div>
       <button
-        className="border rounded-md border-slate-50 p-3 hover:bg-zinc-800"
+        className="rounded-md bg-blue-900 text-blue-100 p-3 hover:bg-blue-800 hover:text-blue-100"
         onClick={handleClick}
         disabled={connectButtonDisabled}
       >
